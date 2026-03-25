@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #4F46E5;
+  --color-secondary: #7C3AED;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-background: #F8FAFC;
+  /* Dark mode overrides for background if handled via CSS vars */
+  --color-card: #FFFFFF;
+  --color-border: #E2E8F0;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #64748B;
+
+  --font-sans: "Inter", "sans-serif";
+  --font-heading: "Poppins", "sans-serif";
+  --font-mono: "JetBrains Mono", "monospace";
+}
+
+@layer base {
+  :root {
+    --bg-main: #F8FAFC;
+    --bg-card: #FFFFFF;
+    --text-main: #0F172A;
+    --text-sub: #64748B;
+    --border-main: #E2E8F0;
+  }
+
+  .dark {
+    --bg-main: #0F172A;
+    --bg-card: #1E293B;
+    --text-main: #F8FAFC;
+    --text-sub: #94A3B8;
+    --border-main: #334155;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    @apply font-sans transition-colors duration-300;
+  }
+}
+
+@theme {
+  --color-background: var(--bg-main);
+  --color-card: var(--bg-card);
+  --color-text-primary: var(--text-main);
+  --color-text-secondary: var(--text-sub);
+  --color-border: var(--border-main);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-text-primary font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 hover:bg-primary/90;
+  }
+  .btn-secondary {
+    @apply bg-secondary text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 hover:bg-secondary/90;
+  }
+  .card {
+    @apply bg-card border border-border rounded-xl shadow-sm overflow-hidden;
+  }
+}

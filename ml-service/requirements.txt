@@ -1,0 +1,15 @@
+# HabitForge ML Engine — Compatible with Python 3.13
+# Production-grade ML modules for habit prediction and consistency forecasting
+
+pymongo
+pandas
+numpy
+scikit-learn
+xgboost
+joblib
+fastapi
+uvicorn
+statsmodels
+tensorflow
+pydantic
+python-dotenv

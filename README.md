@@ -1,114 +1,87 @@
-# HabitForge – AI-Driven Habit Transformation Platform
+# 🚀 HabitForge: AI-Powered Habit Tracking Ecosystem
 
-HabitForge is a premium, full-stack MERN (MongoDB, Express, React, Node.js) application designed to help users build and maintain life-changing habits through real-time tracking, advanced behavioral analytics, and ML-powered predictive insights.
+HabitForge is a next-generation, cloud-native habit tracking platform. Moving beyond simple MERN-stack CRUD operations, HabitForge employs a dedicated Python Machine Learning microservice to provide predictive behavioral analytics, calculating the statistical probability of a user completing a habit on any given day.
 
-## 🚀 Vision
-Building habits is a data-driven journey. HabitForge combines the meticulous tracking of productivity apps with the intelligence of machine learning, creating a "FocusFlow" environment where consistency is measured, forecasted, and rewarded.
-
----
-
-## ✨ Core Features
-
-### 📊 Real-Time Dashboard
-*   **Dynamic Stats**: Track your current streak, habit completion scores, and active habit counts.
-*   **Consistency Trajectory**: Interactive charts visualizing your performance over the last 7 or 30 days.
-*   **Predictive Insights**: Real-time AI assessments (via XGBoost/Random Forest) forecasting your completion probability for today.
-
-### ✅ Smart Habit Tracker
-*   **One-Tap Tracking**: Quickly log completions for your personalized habits (Health, Work, Learning, Mindset).
-*   **Live streaks**: Robust, date-grouped streak calculations that account for your historical consistency.
-*   **AI Forecasts**: View a 7-day consistency forecast based on your past behavioral patterns.
-
-### 📈 Advanced Analytics
-*   **Effort Distribution**: Visualize which areas of your life are getting the most attention via pie charts.
-*   **Consistency Trends**: Long-term area charts showing your monthly performance and growth velocity.
-*   **Growth Trend**: Real-time comparison of your performance vs. the previous week (+/- %).
-
-### 👤 Detailed User Profile
-*   **Dynamic Identity**: Customizable profile with bio, image, and high-level performance metrics.
-*   **Join Date Tracking**: Historical tracking of your journey since day one.
-*   **Real-Time Stat Refresh**: On-the-fly recalculation of longest streaks and total completions.
+![HabitForge AI Dashboard](https://img.shields.io/badge/Architecture-MERN_%2B_Python_ML-blue)
+![Deployment](https://img.shields.io/badge/Deployment-Vercel_%2B_Render-success)
+![Database](https://img.shields.io/badge/Database-MongoDB_Atlas-green)
 
 ---
 
-## 🛠 Tech Stack
+## 🧠 Premium Architecture
 
-### Frontend
-*   **React (Vite)**: Modern, ultra-fast component-based UI.
-*   **Tailwind CSS**: Custom "FocusFlow Minimal" design system with glassmorphism and premium aesthetics.
-*   **Framer Motion**: Smooth micro-animations and page transitions.
-*   **Recharts**: High-performance data visualization.
-*   **Lucide React**: Clean, consistent iconography.
-*   **Axios**: Secure API communication with JWT interceptors.
+HabitForge utilizes a decoupled, three-tier cloud architecture synchronized across **Vercel** and **Render**, leveraging **MongoDB Atlas** as the centralized data lake.
 
-### Backend
-*   **Node.js & Express**: Scalable RESTful API architecture.
-*   **MongoDB & Mongoose**: Flexible document-based data storage.
-*   **JWT (JSON Web Tokens)**: Secure, stateless authentication.
-*   **ML (Python/FastAPI)**: Supervised Classification (Habit Prediction) & ARIMA Time-Series (Consistency Forecasting).
+1. **Frontend (Vercel)**
+   - **Tech:** React, Vite, TailwindCSS, Framer Motion
+   - **Role:** Delivers a dynamic, Dark Mode-compatible SPA. Communicates strictly with the centralized Node.js proxy via `VITE_API_URL` interceptors.
 
----
+2. **Backend Proxy (Render)**
+   - **Tech:** Node.js, Express, Mongoose, JWT
+   - **Role:** Handles core CRUD, JWT issuance, password hashing (bcrypt), and acts as a secure proxy to relay user data to the ML Service without exposing the mathematical endpoints publically.
 
-## 📁 Project Structure
-
-```text
-habitforge/
-├── backend/
-│   ├── models/        # Mongoose Schema Definitions (User, Habit, HabitLog, etc.)
-│   ├── controllers/   # Logic for Profile, Stats, and Habits
-│   ├── routes/        # API Endpoints (Auth, Dashboard, Analytics, User, etc.)
-│   ├── middleware/    # Security & Auth Guards
-│   └── server.js      # Main Entry Point
-├── frontend/
-│   ├── src/
-│   │   ├── components/ # Reusable UI Components (AIInsightsPanel, etc.)
-│   │   ├── context/    # Global State (Auth)
-│   │   ├── pages/      # View Components (Dashboard, Analytics, Profile, etc.)
-│   │   └── layouts/    # Page Wrappers (MainLayout, AuthLayout)
-├── ml/
-│   ├── api.py         # FastAPI Inference Server
-│   ├── models/        # Serialized ML Models (joblib)
-│   └── scripts/       # Model Training & Data Preprocessing
-└── README.md
-```
+3. **Machine Learning Engine (Render)**
+   - **Tech:** Python, FastAPI, Scikit-Learn, Pandas
+   - **Role:** An isolated behavioral analytics microservice. Connects directly to MongoDB Atlas to vectorize historical `HabitLog` data, utilizing **Random Forest Classification** to predict daily completion probabilities ("Likely", "At Risk").
 
 ---
 
-## ⚙️ Getting Started
+## 🛠️ Machine Learning Prediction Engine
 
-### Prerequisites
-*   Node.js (v24+)
-*   MongoDB Instance (Local or Atlas)
-*   Python 3.10+ (for ML services)
+The core differentiator of HabitForge is its predictive capability. 
 
-### Setup
-1.  **Clone the repository**
-2.  **Environment Configuration**:
-    *   Create `.env` in `backend/` with `MONGO_URI`, `JWT_SECRET`, and `PORT=5000`.
-3.  **Install Dependencies**:
-    ```bash
-    # Root
-    npm install
-    # Frontend/Backend
-    cd frontend && npm install
-    cd ../backend && npm install
-    # ML
-    cd ../ml && pip install -r requirements.txt
-    ```
-4.  **Run the Project**:
-    ```bash
-    # Run Backend (Port 5000)
-    cd backend && npm start
-    # Run Frontend (Port 5173)
-    cd frontend && npm run dev
-    # Run ML Service (Port 8000)
-    cd ml && python api.py
-    ```
+When the user queries the AI Insights panel, the data flow triggers:
+1. The **Node Application** authenticates the JWT and wraps the `habitId` into a payload to the Python Service.
+2. **FastAPI** executes `data_loader.py` to extract all historical timestamps from the Atlas Cluster.
+3. Features are engineered on the fly: `rolling_7d_mean`, `current_streak`, `is_weekend`, `completion_hour_avg`.
+4. The **Random Forest Classifier** (`joblib` pickled) assesses the vectors and returns a highly calculated percentage and outcome (e.g., `will_complete` with 64.8% probability).
+
+*(If insufficient data or extreme mathematical variance is detected, the engine gracefully proxies an `insufficient_data` flag to avoid misleading the user).*
 
 ---
 
-## 🎨 Design Philosophy
-HabitForge follows the **FocusFlow Minimal** design system:
-*   **Clean Geometry**: Using 2xl and 3xl border radii for a soft, premium feel.
-*   **Intelligent Visuals**: Color-coded success states that provide instant psychological feedback on performance.
-*   **Anti-Clutter**: Information is layered using card-based architecture to reduce cognitive load.
+## 🚀 Cloud Deployment Variables
+
+To host your own version of the HabitForge ecosystem, deploy the Repositories and inject the following strict Environment Variables:
+
+### 1. Vercel (Frontend)
+- `VITE_API_URL`: The exact URL of the deployed Node.js backend.
+
+### 2. Render Node.js (Backend)
+- `MONGO_URI`: The MongoDB Atlas string containing the target database (`...mongodb.net/habitforge?...`)
+- `ALLOWED_ORIGINS`: The deployed Vercel URL to restrict extreme CORS access.
+- `JWT_SECRET`: Secure cryptographic key for token signing.
+- `ML_API_URL`: The exact URL of the deployed Python FastAPI ML Service.
+
+### 3. Render Python (ML Service)
+- `MONGO_URI`: Identical Atlas string to allow the engine raw data access.
+- `PYTHON_VERSION`: Set to `3.10.0` or higher to ensure `scikit-learn` dependency matching.
+
+---
+
+## 📂 Local Development
+
+Clone the monorepo and navigate to the respective folders to spin up the local environment.
+
+**Frontend:**
+\`\`\`bash
+cd frontend
+npm install
+npm run dev
+\`\`\`
+
+**Backend:**
+\`\`\`bash
+cd backend
+npm install
+npm start
+\`\`\`
+
+**ML Service:**
+\`\`\`bash
+cd ml-service
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python api.py
+\`\`\`

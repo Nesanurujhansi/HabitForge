@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { 
   Flame, 
@@ -15,7 +14,6 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
-import { motion } from 'framer-motion';
 import AIInsightsPanel from './AIInsightsPanel';
 import { useTheme } from '../context/ThemeContext';
 

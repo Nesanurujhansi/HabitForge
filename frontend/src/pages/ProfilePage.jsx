@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { 
   User, Mail, Calendar, Camera, Save, 
@@ -11,7 +10,6 @@ import {
 
 import { useTheme } from '../context/ThemeContext';
 import api from '../api/axios';
-import { motion } from 'framer-motion';
 
 const ProfilePage = () => {
   const { isDarkMode } = useTheme();

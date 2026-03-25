@@ -40,9 +40,11 @@ const LoginPage = () => {
           <p className="text-text-secondary mt-2">Log in to track your progress</p>
         </div>
 
-        <div className="card p-8 bg-white shadow-xl">
+        <div className="card p-8 shadow-xl">
           {error && (
-            <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm flex items-start gap-2 border border-red-100">
+            <div className={`p-4 rounded-lg mb-6 text-sm flex items-start gap-2 border ${
+              isDarkMode ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-red-50 text-red-600 border-red-100'
+            }`}>
               <span>{error}</span>
             </div>
           )}
@@ -58,7 +60,7 @@ const LoginPage = () => {
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-text-primary"
                   placeholder="name@example.com"
                   required
                 />
@@ -78,7 +80,7 @@ const LoginPage = () => {
                   type="password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-text-primary"
                   placeholder="••••••••"
                   required
                 />

@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { User, Mail, Lock, Loader2 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const RegisterPage = () => {
+  const { isDarkMode } = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -53,9 +55,11 @@ const RegisterPage = () => {
           <p className="text-text-secondary mt-2">Create an account and forge better habits</p>
         </div>
 
-        <div className="card p-8 bg-white shadow-xl">
+        <div className="card p-8 shadow-xl">
           {error && (
-            <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm border border-red-100 italic">
+            <div className={`p-4 rounded-lg mb-6 text-sm border italic ${
+              isDarkMode ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-red-50 text-red-600 border-red-100'
+            }`}>
               {error}
             </div>
           )}
@@ -72,7 +76,7 @@ const RegisterPage = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-text-primary"
                   placeholder="Alex Johnson"
                   required
                 />
@@ -90,7 +94,7 @@ const RegisterPage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-text-primary"
                   placeholder="alex@example.com"
                   required
                 />
@@ -108,7 +112,7 @@ const RegisterPage = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-text-primary"
                   placeholder="••••••••"
                   required
                 />
@@ -126,7 +130,7 @@ const RegisterPage = () => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-text-primary"
                   placeholder="••••••••"
                   required
                 />
